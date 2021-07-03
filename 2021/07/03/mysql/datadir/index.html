@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>move mysql datadir | liangjisheng.github.io</title>
+  <meta name="author" content="liangjisheng">
+  
+  <meta name="description" content="在16.04和18.04版本的mysql数据库，默认是5.7版本的，想要修改数据目录，需要修改2个地方一个是mysql的配置文件，另一个是apparmor。apparnor 是控制访问权限的， mysql依赖它
+创建新的目录123mkdir /data/mysqlsudo chmod 0700 /data/mysqlsudo chown mysql:mysql /data/mysql">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="move mysql datadir"/>
+  <meta property="og:site_name" content="liangjisheng.github.io"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link rel="shortcut icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">liangjisheng.github.io</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/null">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-mysql/datadir" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-07-03T10:43:04.000Z"><a href="/2021/07/03/mysql/datadir/">2021-07-03</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">move mysql datadir</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>在16.04和18.04版本的mysql数据库，默认是5.7版本的，想要修改数据目录，需要修改2个地方<br>一个是mysql的配置文件，另一个是apparmor。<br>apparnor 是控制访问权限的， mysql依赖它</p>
+<h3 id="创建新的目录"><a href="#创建新的目录" class="headerlink" title="创建新的目录"></a>创建新的目录</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /data/mysql</span><br><span class="line">sudo chmod 0700 /data/mysql</span><br><span class="line">sudo chown mysql:mysql /data/mysql</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h3 id="移动数据"><a href="#移动数据" class="headerlink" title="移动数据"></a>移动数据</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv /var/lib/mysql/* /data/mysql</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除日志"><a href="#删除日志" class="headerlink" title="删除日志"></a>删除日志</h3><blockquote>
+<p>不删除会报错</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /data/mysql/ib_logfile*</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改mysql配置文件"><a href="#修改mysql配置文件" class="headerlink" title="修改mysql配置文件"></a>修改mysql配置文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mysql/my.cnf</span><br><span class="line">datadir=/data/mysql</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改apparmor的配置文件use-sbin-mysqld"><a href="#修改apparmor的配置文件use-sbin-mysqld" class="headerlink" title="修改apparmor的配置文件use.sbin.mysqld"></a>修改apparmor的配置文件use.sbin.mysqld</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/apparmor/usr.sbin.mysqld</span><br></pre></td></tr></table></figure>
+
+<p>把</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/mysql/ r,  </span><br><span class="line">/var/lib/mysql/** rwk,</span><br></pre></td></tr></table></figure>
+
+<p>修改为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/database/mysql/ r,  </span><br><span class="line">/database/mysql/** rwk,</span><br></pre></td></tr></table></figure>
+
+<h3 id="重启-apparmor"><a href="#重启-apparmor" class="headerlink" title="重启 apparmor"></a>重启 apparmor</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart apparmor</span><br></pre></td></tr></table></figure>
+
+<h3 id="重启-mysql"><a href="#重启-mysql" class="headerlink" title="重启 mysql"></a>重启 mysql</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart mysql</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果出现启动成功，但是测试新建数据库还是在原来的目录，试试重启服务器，或者仔细查看mysql配置文件，提醒一下 并不需要更改/usr/share/mysql/mysql-systemd-start 脚本中的datadir变量</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="https://liangjisheng.github.io/2021/07/03/mysql/datadir/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="liangjisheng.github.io">
+  </form>
+</div>
+
+
+  
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 liangjisheng
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script>
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

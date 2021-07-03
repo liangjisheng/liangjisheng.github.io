@@ -45,17 +45,92 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
-  <article id="post-grpcplugins" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-mysql/datadir" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2021-05-18T12:18:00.000Z"><a href="/2021/05/18/grpcplugins/">2021-05-18</a></time>
+        <time class="dt-published" datetime="2021-07-03T10:43:04.000Z"><a href="/2021/07/03/mysql/datadir/">2021-07-03</a></time>
       
       
   
-    <h1 class="title"><a href="/2021/05/18/grpcplugins/">grpc plugins not support</a></h1>
+    <h1 class="title"><a href="/2021/07/03/mysql/datadir/">move mysql datadir</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>在16.04和18.04版本的mysql数据库，默认是5.7版本的，想要修改数据目录，需要修改2个地方<br>一个是mysql的配置文件，另一个是apparmor。<br>apparnor 是控制访问权限的， mysql依赖它</p>
+<h3 id="创建新的目录"><a href="#创建新的目录" class="headerlink" title="创建新的目录"></a>创建新的目录</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /data/mysql</span><br><span class="line">sudo chmod 0700 /data/mysql</span><br><span class="line">sudo chown mysql:mysql /data/mysql</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2021/07/03/mysql/datadir/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-mysql/InnoDBFail" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-07-03T10:38:33.000Z"><a href="/2021/07/03/mysql/InnoDBFail/">2021-07-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2021/07/03/mysql/InnoDBFail/">InnoDBFail</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart mysql</span><br></pre></td></tr></table></figure>
+
+<p>使用上面命令重启 mysql 的时候失败，提示查看 journalctl -xe， 得到下面的报错</p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2021/07/03/mysql/InnoDBFail/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-grpc/grpcplugins" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-05-18T12:18:00.000Z"><a href="/2021/05/18/grpc/grpcplugins/">2021-05-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2021/05/18/grpc/grpcplugins/">grpc plugins not support</a></h1>
   
 
     </header>

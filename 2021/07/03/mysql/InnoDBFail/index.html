@@ -3,17 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>grpc plugins not support | liangjisheng.github.io</title>
+  <title>InnoDBFail | liangjisheng.github.io</title>
   <meta name="author" content="liangjisheng">
   
-  <meta name="description" content="起因是执行 protoc 报下面的错误
-1--go_out: protoc-gen-go: plugins are not supported; use &amp;#x27;protoc --go-grpc_out=...&amp;#x27; to generate gRPC
+  <meta name="description" content="1sudo systemctl restart mysql
 
-原因是2个不同包下面的 protoc">
+使用上面命令重启 mysql 的时候失败，提示查看 journalctl -xe， 得到下面的报错">
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="grpc plugins not support"/>
+  <meta property="og:title" content="InnoDBFail"/>
   <meta property="og:site_name" content="liangjisheng.github.io"/>
 
   
@@ -49,26 +48,31 @@
 <div class="clearfix"></div>
 </header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-grpcplugins" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-mysql/InnoDBFail" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2021-05-18T12:18:00.000Z"><a href="/2021/05/18/grpcplugins/">2021-05-18</a></time>
+        <time class="dt-published" datetime="2021-07-03T10:38:33.000Z"><a href="/2021/07/03/mysql/InnoDBFail/">2021-07-03</a></time>
       
       
   
-    <h1 class="p-name title" itemprop="headline name">grpc plugins not support</h1>
+    <h1 class="p-name title" itemprop="headline name">InnoDBFail</h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <p>起因是执行 protoc 报下面的错误</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--go_out: protoc-gen-go: plugins are not supported; use <span class="string">&#x27;protoc --go-grpc_out=...&#x27;</span> to generate gRPC</span><br></pre></td></tr></table></figure>
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart mysql</span><br></pre></td></tr></table></figure>
 
-<p>原因是2个不同包下面的 protoc-gen-go 导致的, 更多详细情况查看 <a target="_blank" rel="noopener" href="https://github.com/golang/protobuf/issues/1070">issue</a></p>
+<p>使用上面命令重启 mysql 的时候失败，提示查看 journalctl -xe， 得到下面的报错</p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2021-07-02T02:41:52.406001Z 0 [ERROR] InnoDB: The innodb_system data file &#x27;ibdata1&#x27; must be writable</span><br><span class="line">2021-07-02T02:41:52.406012Z 0 [ERROR] InnoDB: The innodb_system data file &#x27;ibdata1&#x27; must be writable</span><br><span class="line">2021-07-02T02:41:52.406015Z 0 [ERROR] InnoDB: Plugin initialization aborted with error Generic error</span><br><span class="line">2021-07-02T02:41:53.006814Z 0 [ERROR] Plugin &#x27;InnoDB&#x27; init function returned error.</span><br><span class="line">2021-07-02T02:41:53.006838Z 0 [ERROR] Plugin &#x27;InnoDB&#x27; registration as a STORAGE ENGINE failed.</span><br><span class="line">2021-07-02T02:41:53.006845Z 0 [ERROR] Failed to initialize builtin plugins.</span><br><span class="line">2021-07-02T02:41:53.006850Z 0 [ERROR] Aborting</span><br></pre></td></tr></table></figure>
+
+<p>原因就是没有正常关闭mysqld服务的情况下，对数据库参数进行改变导致的。因此重启后的服务器不支持InnoDB引擎<br>处理方法是删除数据目录下的ib_logfile0和ib_logfile1文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ib_logfile*</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -116,7 +120,7 @@
   }(document, 'script', 'facebook-jssdk'));
 </script>
 
-<div class="fb-comments" data-href="https://liangjisheng.github.io/2021/05/18/grpcplugins/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+<div class="fb-comments" data-href="https://liangjisheng.github.io/2021/07/03/mysql/InnoDBFail/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
       
   
 </section>
