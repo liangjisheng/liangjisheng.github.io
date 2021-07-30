@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>sudo-su.md | liangjisheng.github.io</title>
+  <meta name="author" content="liangjisheng">
+  
+  <meta name="description" content="sudo, su, su -的区别sudo是一种权限管理机制, 依赖于/etc/sudoers, 其定义了授权给哪个用户可以以管理员的身份能够执行什么样的管理命令格式: sudo -u USERNAME COMMAND">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="sudo-su.md"/>
+  <meta property="og:site_name" content="liangjisheng.github.io"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link rel="shortcut icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">liangjisheng.github.io</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/null">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-sudo-su-md" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-07-19T13:00:21.000Z"><a href="/2021/07/19/sudo-su-md/">2021-07-19</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">sudo-su.md</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h2 id="sudo-su-su-的区别"><a href="#sudo-su-su-的区别" class="headerlink" title="sudo, su, su -的区别"></a>sudo, su, su -的区别</h2><p>sudo是一种权限管理机制, 依赖于/etc/sudoers, 其定义了授权给哪个用户可以以管理员的身份能够执行什么样的管理命令<br>格式: sudo -u USERNAME COMMAND</p>
+<span id="more"></span>
+
+<p>su为switch user, 即切换用户的简写, su是最简单的身份切换名, 用su我们能够进行不论什么用户的切换<br>一般都是su username, 然后输入password就ok了, 可是root用su切换到其它身份的时候是不须要输入password的<br>如果不指定USERNAME(用户名), 默认即为root</p>
+<p>su -, su -l或su –login 命令改变身份时, 也同时变更工作目录, 以及HOME, SHELL, USER, LOGNAME<br>此外也会变更PATH变量. 用su -命令则默认转换成成root用户了<br>而不带参数的”su命令”不会改变当前工作目录以及HOME,SHELL,USER,LOGNAME. 只是拥有了root的权限而已</p>
+<p>sudo 命令需要输入当前用户的密码, su 命令需要输入 root 用户的密码<br>鉴于 sudo 命令要求输入的是其他用户自己的密码, 所以不需要共享 root 密码<br>同时想要阻止特定用户访问 root 权限, 只需要调整 sudoers 文件中的相应配置即可</p>
+<p>sudo 命令只允许使用提升的权限运行单个命令, 而 su 命令会启动一个新的 shell<br>同时允许使用 root 权限运行尽可能多的命令, 直到明确退出登录</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="https://liangjisheng.github.io/2021/07/19/sudo-su-md/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="liangjisheng.github.io">
+  </form>
+</div>
+
+
+  
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 liangjisheng
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script>
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
